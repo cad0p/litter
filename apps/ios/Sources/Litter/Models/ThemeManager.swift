@@ -14,15 +14,47 @@ final class ThemeStore: Sendable {
     nonisolated(unsafe) var dark: ResolvedTheme = .defaultDark
 }
 
+enum LitterAppearanceMode: String, CaseIterable, Identifiable {
+    case system
+    case light
+    case dark
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        switch self {
+        case .system:
+            return "System"
+        case .light:
+            return "Light"
+        case .dark:
+            return "Dark"
+        }
+    }
+
+    var preferredColorScheme: ColorScheme? {
+        switch self {
+        case .system:
+            return nil
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        }
+    }
+}
+
 @MainActor
 @Observable
 final class ThemeManager {
     static let shared = ThemeManager()
 
     private static let appGroupSuite = LitterPalette.appGroupSuite
+    private static let appearanceModeKey = "appearanceMode"
 
     private(set) var lightTheme: ResolvedTheme = .defaultLight
     private(set) var darkTheme: ResolvedTheme = .defaultDark
+    private(set) var appearanceMode: LitterAppearanceMode = .system
     private(set) var themeVersion: Int = 0
     private(set) var themeIndex: [ThemeIndexEntry] = []
 
@@ -48,6 +80,7 @@ final class ThemeManager {
 
     private init() {
         loadThemeIndex()
+        appearanceMode = Self.storedAppearanceMode()
         lightTheme = loadAndResolve(selectedLightSlug) ?? .defaultLight
         darkTheme = loadAndResolve(selectedDarkSlug) ?? .defaultDark
         syncStore()
@@ -60,6 +93,13 @@ final class ThemeManager {
     }
 
     // MARK: - Public API
+
+    func setAppearanceMode(_ mode: LitterAppearanceMode) {
+        guard mode != appearanceMode else { return }
+        appearanceMode = mode
+        UserDefaults.standard.set(mode.rawValue, forKey: Self.appearanceModeKey)
+        writeToSharedDefaults()
+    }
 
     func selectLightTheme(_ slug: String) {
         selectedLightSlug = slug
@@ -85,6 +125,13 @@ final class ThemeManager {
 
     func resolvedTheme(for colorScheme: ColorScheme) -> ResolvedTheme {
         colorScheme == .dark ? darkTheme : lightTheme
+    }
+
+    private static func storedAppearanceMode() -> LitterAppearanceMode {
+        guard let raw = UserDefaults.standard.string(forKey: appearanceModeKey) else {
+            return .system
+        }
+        return LitterAppearanceMode(rawValue: raw) ?? .system
     }
 
     // MARK: - Loading
@@ -140,6 +187,7 @@ final class ThemeManager {
         // Sync font preference alongside theme colors
         let family = UserDefaults.standard.string(forKey: "fontFamily") ?? "mono"
         shared.set(family, forKey: "fontFamily")
+        shared.set(appearanceMode.rawValue, forKey: Self.appearanceModeKey)
         let pairs: [(String, String, String)] = [
             ("surface", lightTheme.surface, darkTheme.surface),
             ("surfaceLight", lightTheme.surfaceLight, darkTheme.surfaceLight),

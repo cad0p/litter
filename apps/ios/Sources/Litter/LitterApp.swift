@@ -456,6 +456,7 @@ struct ContentView: View {
         .environment(appState)
         .environment(conversationWarmup)
         .environment(\.textScale, textScale)
+        .preferredColorScheme(themeManager.appearanceMode.preferredColorScheme)
         #if targetEnvironment(macCatalyst)
         .background {
             MacWindowTitleBarStyler()

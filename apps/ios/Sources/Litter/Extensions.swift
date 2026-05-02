@@ -59,9 +59,17 @@ enum LitterTheme {
     })
 
     static var gradientColors: [Color] {
-        let isDark = UITraitCollection.current.userInterfaceStyle == .dark
-        let theme = isDark ? dark : light
-        return gradientColors(for: theme, isDark: isDark)
+        [
+            adaptive(light: light.background, dark: dark.background),
+            adaptive(
+                light: ResolvedTheme.adjustBrightness(light.background, by: -0.01),
+                dark: ResolvedTheme.adjustBrightness(dark.background, by: 0.02)
+            ),
+            adaptive(
+                light: ResolvedTheme.adjustBrightness(light.background, by: 0.01),
+                dark: ResolvedTheme.adjustBrightness(dark.background, by: -0.01)
+            ),
+        ]
     }
 
     static func gradientColors(for colorScheme: ColorScheme) -> [Color] {
@@ -96,9 +104,7 @@ enum LitterTheme {
     }
 
     static var headerScrim: [Color] {
-        let isDark = UITraitCollection.current.userInterfaceStyle == .dark
-        let bg = isDark ? dark.background : light.background
-        let bgColor = Color(hex: bg)
+        let bgColor = adaptive(light: light.background, dark: dark.background)
         return [bgColor.opacity(0.7), bgColor.opacity(0.3), .clear]
     }
 }

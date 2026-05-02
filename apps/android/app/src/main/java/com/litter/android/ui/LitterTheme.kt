@@ -1,5 +1,6 @@
 package com.litter.android.ui
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -223,11 +224,12 @@ fun LitterAppTheme(content: @Composable () -> Unit) {
         onDispose {}
     }
 
-    val darkModeEnabled = LitterThemeManager.darkModeEnabled
+    val systemIsDark = isSystemInDarkTheme()
+    val appearanceMode = LitterThemeManager.appearanceMode
     val lightThemeSlug = LitterThemeManager.lightTheme.slug
     val darkThemeSlug = LitterThemeManager.darkTheme.slug
-    LaunchedEffect(darkModeEnabled, lightThemeSlug, darkThemeSlug) {
-        LitterThemeManager.applySystemTheme(darkModeEnabled)
+    LaunchedEffect(appearanceMode, systemIsDark, lightThemeSlug, darkThemeSlug) {
+        LitterThemeManager.applySystemTheme(systemIsDark)
     }
 
     val activeTheme = LitterThemeManager.activeTheme
