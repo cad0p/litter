@@ -31,6 +31,13 @@ enum class LitterAppearanceMode(
         fun fromStorageValue(value: String?): LitterAppearanceMode? =
             entries.firstOrNull { it.storageValue.equals(value, ignoreCase = true) }
     }
+
+    fun resolvesDarkTheme(systemIsDark: Boolean): Boolean =
+        when (this) {
+            SYSTEM -> systemIsDark
+            LIGHT -> false
+            DARK -> true
+        }
 }
 
 enum class LitterColorThemeType {
@@ -341,11 +348,7 @@ object LitterThemeManager {
     }
 
     private fun usesDarkTheme(mode: LitterAppearanceMode = appearanceMode): Boolean =
-        when (mode) {
-            LitterAppearanceMode.SYSTEM -> systemIsDark
-            LitterAppearanceMode.LIGHT -> false
-            LitterAppearanceMode.DARK -> true
-        }
+        mode.resolvesDarkTheme(systemIsDark)
 
     private fun themeForMode(mode: LitterAppearanceMode): LitterResolvedTheme =
         if (usesDarkTheme(mode)) {

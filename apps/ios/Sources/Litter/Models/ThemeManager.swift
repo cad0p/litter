@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import Observation
 
 extension Notification.Name {
@@ -12,6 +13,7 @@ final class ThemeStore: Sendable {
 
     nonisolated(unsafe) var light: ResolvedTheme = .defaultLight
     nonisolated(unsafe) var dark: ResolvedTheme = .defaultDark
+    nonisolated(unsafe) var colorScheme: ColorScheme = .dark
 }
 
 enum LitterAppearanceMode: String, CaseIterable, Identifiable {
@@ -42,6 +44,21 @@ enum LitterAppearanceMode: String, CaseIterable, Identifiable {
             return .dark
         }
     }
+
+    func resolvedColorScheme(systemColorScheme: ColorScheme) -> ColorScheme {
+        preferredColorScheme ?? systemColorScheme
+    }
+
+    var userInterfaceStyle: UIUserInterfaceStyle {
+        switch self {
+        case .system:
+            return .unspecified
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        }
+    }
 }
 
 @MainActor
@@ -57,6 +74,7 @@ final class ThemeManager {
     private(set) var appearanceMode: LitterAppearanceMode = .system
     private(set) var themeVersion: Int = 0
     private(set) var themeIndex: [ThemeIndexEntry] = []
+    private var systemColorScheme: ColorScheme = .dark
 
     var selectedLightSlug: String {
         get { UserDefaults.standard.string(forKey: "selectedLightTheme") ?? "kitty-litter-light" }
@@ -81,6 +99,7 @@ final class ThemeManager {
     private init() {
         loadThemeIndex()
         appearanceMode = Self.storedAppearanceMode()
+        systemColorScheme = Self.currentSystemColorScheme()
         lightTheme = loadAndResolve(selectedLightSlug) ?? .defaultLight
         darkTheme = loadAndResolve(selectedDarkSlug) ?? .defaultDark
         syncStore()
@@ -90,6 +109,7 @@ final class ThemeManager {
     private func syncStore() {
         ThemeStore.shared.light = lightTheme
         ThemeStore.shared.dark = darkTheme
+        ThemeStore.shared.colorScheme = appearanceMode.resolvedColorScheme(systemColorScheme: systemColorScheme)
     }
 
     // MARK: - Public API
@@ -98,7 +118,19 @@ final class ThemeManager {
         guard mode != appearanceMode else { return }
         appearanceMode = mode
         UserDefaults.standard.set(mode.rawValue, forKey: Self.appearanceModeKey)
+        syncStore()
+        themeVersion += 1
         writeToSharedDefaults()
+        notifyHighlighter()
+    }
+
+    func syncSystemColorScheme(_ colorScheme: ColorScheme) {
+        guard colorScheme != systemColorScheme else { return }
+        systemColorScheme = colorScheme
+        guard appearanceMode == .system else { return }
+        syncStore()
+        themeVersion += 1
+        notifyHighlighter()
     }
 
     func selectLightTheme(_ slug: String) {
@@ -132,6 +164,10 @@ final class ThemeManager {
             return .system
         }
         return LitterAppearanceMode(rawValue: raw) ?? .system
+    }
+
+    private static func currentSystemColorScheme() -> ColorScheme {
+        UITraitCollection.current.userInterfaceStyle == .light ? .light : .dark
     }
 
     // MARK: - Loading
