@@ -839,13 +839,28 @@ impl AppClient {
         params: types::AppStartRealtimeSessionRequest,
     ) -> Result<(), ClientError> {
         blocking_async!(self.rt, self.inner, |c| {
+            let thread_id = params.thread_id.clone();
             let params = convert_params::<_, upstream::ThreadRealtimeStartParams>(params)?;
-            let _: upstream::ThreadRealtimeStartResponse = rpc(
+            let response: Result<upstream::ThreadRealtimeStartResponse, ClientError> = rpc(
                 c.as_ref(),
                 &server_id,
-                req!(server_id, ThreadRealtimeStart, params),
+                req!(server_id, ThreadRealtimeStart, params.clone()),
             )
-            .await?;
+            .await;
+            if let Err(error) = response {
+                if !is_stale_thread_error(&error.to_string()) {
+                    return Err(error);
+                }
+                c.force_refresh_thread_authoritative(&server_id, &thread_id)
+                    .await
+                    .map_err(|recover_error| ClientError::Rpc(recover_error.to_string()))?;
+                let _: upstream::ThreadRealtimeStartResponse = rpc(
+                    c.as_ref(),
+                    &server_id,
+                    req!(server_id, ThreadRealtimeStart, params),
+                )
+                .await?;
+            }
             Ok(())
         })
     }
@@ -1365,7 +1380,7 @@ impl AppClient {
         path: String,
     ) -> Result<types::DirectoryListResult, ClientError> {
         blocking_async!(self.rt, self.inner, |c| {
-            let normalized = {
+            let requested_path = {
                 let p = path.trim();
                 if p.is_empty() {
                     "/".to_string()
@@ -1373,7 +1388,8 @@ impl AppClient {
                     p.to_string()
                 }
             };
-            let rp = crate::remote_path::RemotePath::parse(&normalized);
+            let rp = crate::remote_path::RemotePath::parse(&requested_path);
+            let normalized = rp.as_str().to_string();
             let is_windows = rp.is_windows();
 
             let (command, cwd): (Vec<&str>, &str) = if is_windows {
@@ -1410,11 +1426,12 @@ impl AppClient {
         path: String,
     ) -> Result<(), ClientError> {
         blocking_async!(self.rt, self.inner, |c| {
-            let normalized = path.trim().to_string();
-            if normalized.is_empty() {
+            let requested_path = path.trim().to_string();
+            if requested_path.is_empty() {
                 return Err(ClientError::Rpc("path is empty".to_string()));
             }
-            let rp = crate::remote_path::RemotePath::parse(&normalized);
+            let rp = crate::remote_path::RemotePath::parse(&requested_path);
+            let normalized = rp.as_str().to_string();
             let is_windows = rp.is_windows();
 
             // `mkdir -p` on POSIX is idempotent. On Windows we fall back to
