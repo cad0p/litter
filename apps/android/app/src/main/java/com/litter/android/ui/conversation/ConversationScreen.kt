@@ -383,11 +383,11 @@ fun ConversationScreen(
     LaunchedEffect(threadKey, displayedTurnCount, transcriptTailSignature, followScrollToken, streamingRenderTick) {
         if (shouldFollowTail && displayedTurns.isNotEmpty()) {
             val bottomAnchorIndex = conversationBottomAnchorIndex(displayedTurnCount)
-            if (hasPositionedInitialTail) {
-                listState.animateScrollToItem(bottomAnchorIndex)
-            } else {
+            if (!hasPositionedInitialTail || isThinking) {
                 listState.scrollToItem(bottomAnchorIndex)
                 hasPositionedInitialTail = true
+            } else {
+                listState.animateScrollToItem(bottomAnchorIndex)
             }
         }
     }

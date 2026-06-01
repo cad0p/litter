@@ -45,6 +45,7 @@ internal fun SelectableMarkdownText(
     modifier: Modifier = Modifier,
     bodySize: Float = LitterTextStyle.body,
     usePhysicalDpTextSize: Boolean = false,
+    selectable: Boolean = true,
     onTextViewReady: ((TextView) -> Unit)? = null,
 ) {
     val context = LocalContext.current
@@ -85,6 +86,7 @@ internal fun SelectableMarkdownText(
                     textSize = resolvedTextSize,
                     typeface = typeface,
                     usePhysicalDpTextSize = usePhysicalDpTextSize,
+                    selectable = selectable,
                 )
                 onTextViewReady?.invoke(this)
             }
@@ -97,12 +99,29 @@ internal fun SelectableMarkdownText(
                 textSize = resolvedTextSize,
                 typeface = typeface,
                 usePhysicalDpTextSize = usePhysicalDpTextSize,
+                selectable = selectable,
             )
-            markwon.setMarkdown(tv, markdown)
+            val renderTag = MarkdownRenderTag(
+                markdown = markdown,
+                textColor = textColor,
+                textSizePx = markdownTextSizePx,
+                typeface = typeface,
+            )
+            if (tv.tag != renderTag) {
+                tv.tag = renderTag
+                markwon.setMarkdown(tv, markdown)
+            }
         },
         modifier = modifier,
     )
 }
+
+private data class MarkdownRenderTag(
+    val markdown: String,
+    val textColor: Int,
+    val textSizePx: Float,
+    val typeface: android.graphics.Typeface?,
+)
 
 internal fun configureSelectableMarkdownTextView(
     textView: TextView,
@@ -111,6 +130,7 @@ internal fun configureSelectableMarkdownTextView(
     textSize: Float,
     typeface: android.graphics.Typeface? = null,
     usePhysicalDpTextSize: Boolean = false,
+    selectable: Boolean = true,
 ) {
     textView.setTextColor(textColor)
     textView.typeface = typeface
@@ -123,8 +143,12 @@ internal fun configureSelectableMarkdownTextView(
     textView.linksClickable = true
     textView.movementMethod = LinkMovementMethod.getInstance()
     textView.setLinkTextColor(linkColor)
-    textView.setTextIsSelectable(true)
-    textView.customSelectionActionModeCallback = RunInTerminalSelectionMenu(textView)
+    textView.setTextIsSelectable(selectable)
+    textView.customSelectionActionModeCallback = if (selectable) {
+        RunInTerminalSelectionMenu(textView)
+    } else {
+        null
+    }
 }
 
 /**
