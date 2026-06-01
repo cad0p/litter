@@ -22,6 +22,7 @@ import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.core.MarkwonTheme
 import io.noties.markwon.ext.latex.JLatexMathPlugin
+import io.noties.markwon.ext.tables.TablePlugin
 import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin
 import io.noties.markwon.syntax.SyntaxHighlightPlugin
 import io.noties.prism4j.Prism4j
@@ -230,6 +231,7 @@ private fun rememberConversationMarkwon(
                     io.noties.markwon.syntax.Prism4jThemeDarkula.create(),
                 ),
             )
+            .usePlugin(TablePlugin.create(context))
             .usePlugin(MarkwonInlineParserPlugin.create())
             .usePlugin(
                 JLatexMathPlugin.create(markdownTextSizePx, markdownTextSizePx * 1.12f) { builder ->

@@ -111,6 +111,7 @@ fun ConversationScreen(
             val prism4j = io.noties.prism4j.Prism4j(com.litter.android.ui.Prism4jGrammarLocator())
             io.noties.markwon.Markwon.builder(context)
                 .usePlugin(io.noties.markwon.syntax.SyntaxHighlightPlugin.create(prism4j, io.noties.markwon.syntax.Prism4jThemeDarkula.create()))
+                .usePlugin(io.noties.markwon.ext.tables.TablePlugin.create(context))
                 .build()
         } catch (_: Exception) {
             io.noties.markwon.Markwon.create(context)
