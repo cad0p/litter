@@ -26,6 +26,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Keyboard
 import androidx.compose.material.icons.outlined.PhoneIphone
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material3.DropdownMenu
@@ -539,6 +540,20 @@ private fun TerminalHeader(
             }
         }
         Spacer(Modifier.weight(1f))
+        // ponytail: explicit keyboard toggle — the tap-to-focus path on
+        // the SurfaceView is easy to miss (users often tap chrome, not
+        // the black viewport) and some devices/IMEs never restore focus
+        // after a reconnect.
+        IconButton(
+            onClick = { showTerminalKeyboard() },
+            modifier = Modifier.size(40.dp),
+        ) {
+            Icon(
+                Icons.Outlined.Keyboard,
+                contentDescription = "Show keyboard",
+                tint = LitterTheme.accent,
+            )
+        }
         TextButton(
             onClick = onConfigClick,
             contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp),

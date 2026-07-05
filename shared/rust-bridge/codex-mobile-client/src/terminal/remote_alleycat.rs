@@ -321,7 +321,12 @@ async fn should_accept_session(
 ) -> bool {
     match expected_session_id.lock().await.as_deref() {
         Some(expected) => expected == actual_session_id,
-        None => true,
+        // ponytail: drop replayed backlog frames from prior killed shell
+        // sessions until our own shell/spawn returns and sets the expected
+        // id. Without this a stale shell/exit in the ring breaks the read
+        // loop and the terminal reports "JSON-RPC stream closed" on every
+        // reconnect.
+        None => false,
     }
 }
 

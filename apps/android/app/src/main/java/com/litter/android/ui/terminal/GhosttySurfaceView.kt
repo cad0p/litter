@@ -431,7 +431,12 @@ private class GhosttyAndroidSurfaceView(
             }
 
             override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
-                val renderer = terminalRenderer ?: return false
+                // ponytail: pop the IME on every confirmed tap, even before
+                // the renderer binds. The prior guard returned false when
+                // terminalRenderer was null, so tapping the black surface
+                // during startup never summoned the keyboard.
+                showIme()
+                val renderer = terminalRenderer ?: return true
                 if (currentSelectionRange() != null) {
                     clearSelection()
                     return true
@@ -444,7 +449,6 @@ private class GhosttyAndroidSurfaceView(
                     runCatching { context.startActivity(intent) }
                     return true
                 }
-                showIme()
                 return true
             }
         },
@@ -457,9 +461,20 @@ private class GhosttyAndroidSurfaceView(
         isFocusableInTouchMode = true
         isLongClickable = true
         isHapticFeedbackEnabled = true
+        activeSurface = java.lang.ref.WeakReference(this)
     }
 
+    internal fun forceShowIme() = showIme()
+
     override fun onCheckIsTextEditor(): Boolean = true
+
+    companion object {
+        // ponytail: process-wide handle so the terminal header's keyboard
+        // button can summon the IME without threading a callback through
+        // every Composable. Weak so the view can be GC'd normally.
+        @Volatile
+        internal var activeSurface: java.lang.ref.WeakReference<GhosttyAndroidSurfaceView>? = null
+    }
 
     override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection {
         outAttrs.inputType = (
@@ -916,4 +931,11 @@ private object KeyEventTranslator {
         KeyEvent.KEYCODE_INSERT -> 15
         else -> 0
     }
+}
+
+// ponytail: top-level entry so the terminal header (or any Composable in
+// the terminal package) can pop the IME on the current SurfaceView without
+// exposing the private view class.
+internal fun showTerminalKeyboard() {
+    GhosttyAndroidSurfaceView.activeSurface?.get()?.forceShowIme()
 }
