@@ -74,26 +74,26 @@ private const val TIP_JAR_TAG = "TipJar"
 
 private val TIP_PRODUCTS = listOf(
     TipProduct(
-        productIds = listOf("tip_10", "com.sigkitten.litter.tip.10", "com.sigkitten.litter.android.tip.10"),
-        iconRes = com.sigkitten.litter.android.R.drawable.tip_cat_10,
+        productIds = listOf("tip_10", "com.cad0p.litter.tip.10", "com.cad0p.litter.android.tip.10"),
+        iconRes = com.cad0p.litter.android.R.drawable.tip_cat_10,
         displayName = "$9.99 Tip",
         fallbackPrice = "$9.99",
     ),
     TipProduct(
-        productIds = listOf("tip_25", "com.sigkitten.litter.tip.25", "com.sigkitten.litter.android.tip.25"),
-        iconRes = com.sigkitten.litter.android.R.drawable.tip_cat_25,
+        productIds = listOf("tip_25", "com.cad0p.litter.tip.25", "com.cad0p.litter.android.tip.25"),
+        iconRes = com.cad0p.litter.android.R.drawable.tip_cat_25,
         displayName = "$24.99 Tip",
         fallbackPrice = "$24.99",
     ),
     TipProduct(
-        productIds = listOf("tip_50", "com.sigkitten.litter.tip.50", "com.sigkitten.litter.android.tip.50"),
-        iconRes = com.sigkitten.litter.android.R.drawable.tip_cat_50,
+        productIds = listOf("tip_50", "com.cad0p.litter.tip.50", "com.cad0p.litter.android.tip.50"),
+        iconRes = com.cad0p.litter.android.R.drawable.tip_cat_50,
         displayName = "$49.99 Tip",
         fallbackPrice = "$49.99",
     ),
     TipProduct(
-        productIds = listOf("tip_100", "com.sigkitten.litter.tip.100", "com.sigkitten.litter.android.tip.100"),
-        iconRes = com.sigkitten.litter.android.R.drawable.tip_cat_100,
+        productIds = listOf("tip_100", "com.cad0p.litter.tip.100", "com.cad0p.litter.android.tip.100"),
+        iconRes = com.cad0p.litter.android.R.drawable.tip_cat_100,
         displayName = "$99.99 Tip",
         fallbackPrice = "$99.99",
     ),

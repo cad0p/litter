@@ -29,23 +29,23 @@ object TipJarSupporterState {
     private val tiers: List<Tier> = listOf(
         Tier(
             key = "tip_10",
-            iconRes = com.sigkitten.litter.android.R.drawable.tip_cat_10,
-            productIds = listOf("tip_10", "com.sigkitten.litter.tip.10", "com.sigkitten.litter.android.tip.10"),
+            iconRes = com.cad0p.litter.android.R.drawable.tip_cat_10,
+            productIds = listOf("tip_10", "com.cad0p.litter.tip.10", "com.cad0p.litter.android.tip.10"),
         ),
         Tier(
             key = "tip_25",
-            iconRes = com.sigkitten.litter.android.R.drawable.tip_cat_25,
-            productIds = listOf("tip_25", "com.sigkitten.litter.tip.25", "com.sigkitten.litter.android.tip.25"),
+            iconRes = com.cad0p.litter.android.R.drawable.tip_cat_25,
+            productIds = listOf("tip_25", "com.cad0p.litter.tip.25", "com.cad0p.litter.android.tip.25"),
         ),
         Tier(
             key = "tip_50",
-            iconRes = com.sigkitten.litter.android.R.drawable.tip_cat_50,
-            productIds = listOf("tip_50", "com.sigkitten.litter.tip.50", "com.sigkitten.litter.android.tip.50"),
+            iconRes = com.cad0p.litter.android.R.drawable.tip_cat_50,
+            productIds = listOf("tip_50", "com.cad0p.litter.tip.50", "com.cad0p.litter.android.tip.50"),
         ),
         Tier(
             key = "tip_100",
-            iconRes = com.sigkitten.litter.android.R.drawable.tip_cat_100,
-            productIds = listOf("tip_100", "com.sigkitten.litter.tip.100", "com.sigkitten.litter.android.tip.100"),
+            iconRes = com.cad0p.litter.android.R.drawable.tip_cat_100,
+            productIds = listOf("tip_100", "com.cad0p.litter.tip.100", "com.cad0p.litter.android.tip.100"),
         ),
     )
 

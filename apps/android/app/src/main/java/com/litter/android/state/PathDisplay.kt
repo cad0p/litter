@@ -7,7 +7,7 @@ import android.content.Context
  *
  * For **local** codex paths, rewrites the `HomeAnchor.path(context)` and
  * `$TMPDIR` to `~` and `/tmp` so the UI shows `~/projects/foo` and
- * `/tmp/x.txt` instead of the raw `/data/user/0/com.sigkitten.litter/files/...`
+ * `/tmp/x.txt` instead of the raw `/data/user/0/com.cad0p.litter/files/...`
  * absolute paths.
  *
  * For **remote** paths, shortens paths under a resolved remote home directory

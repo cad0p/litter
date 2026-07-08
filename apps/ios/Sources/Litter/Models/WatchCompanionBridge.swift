@@ -35,7 +35,7 @@ extension WCSession: WatchTransport {}
 final class WatchCompanionBridge: NSObject {
     static let shared = WatchCompanionBridge()
 
-    private static let appGroupSuite = "group.com.sigkitten.litter"
+    private static let appGroupSuite = "group.com.cad0p.litter"
     private static let snapshotKey = "watch.snapshot.v1"
     private static let snapshotTimestampKey = "watch.snapshot.v1.timestamp"
     private static let complicationSnapshotKey = "complication.snapshot.v1"

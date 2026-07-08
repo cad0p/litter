@@ -15,7 +15,7 @@ import com.litter.android.ui.conversation.WidgetBridge
 import com.litter.android.ui.conversation.pushWidgetContent
 import com.litter.android.ui.conversation.wrapWidgetHtml
 import com.litter.android.ui.conversation.escapeJsString
-import com.sigkitten.litter.android.R
+import com.cad0p.litter.android.R
 
 private const val MINIGAME_STUBS = """
 window.sendPrompt = function(){};

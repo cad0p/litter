@@ -1,6 +1,6 @@
 package com.litter.android.ui.home
 
-import com.sigkitten.litter.android.BuildConfig
+import com.cad0p.litter.android.BuildConfig
 import android.graphics.ImageDecoder
 import android.graphics.drawable.Animatable
 import android.os.Build
@@ -116,7 +116,7 @@ import com.litter.android.ui.LocalAppModel
 import com.litter.android.ui.common.DebugBuildLabel
 import com.litter.android.ui.common.runtimeSortIndex
 import com.litter.android.ui.scaled
-import com.sigkitten.litter.android.R
+import com.cad0p.litter.android.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
