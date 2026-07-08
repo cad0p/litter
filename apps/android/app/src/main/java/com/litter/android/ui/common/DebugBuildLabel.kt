@@ -12,7 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import com.litter.android.ui.LitterTheme
-import com.cad0p.litter.android.BuildConfig
+import it.pcad.litter.android.BuildConfig
 
 object BuildInfo {
     /// True only for release builds that came from a Play Store install.

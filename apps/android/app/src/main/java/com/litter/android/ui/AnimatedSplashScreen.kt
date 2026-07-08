@@ -35,7 +35,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.cad0p.litter.android.R
+import it.pcad.litter.android.R
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.floor

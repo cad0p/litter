@@ -37,8 +37,8 @@ from typing import Any
 
 UTC = dt.timezone.utc
 
-DEFAULT_IOS_BUNDLE_ID = "com.cad0p.litter"
-DEFAULT_ANDROID_PACKAGE = "com.cad0p.litter.android"
+DEFAULT_IOS_BUNDLE_ID = "it.pcad.litter"
+DEFAULT_ANDROID_PACKAGE = "it.pcad.litter.android"
 DEFAULT_OUTPUT_BASE = pathlib.Path("/tmp/mobile-store-artifacts")
 DEFAULT_PLAY_ENV_FILE = pathlib.Path.home() / ".config/litter/play-upload.env"
 

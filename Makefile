@@ -88,7 +88,7 @@ ANDROID_ENV := JAVA_HOME='$(JAVA_HOME)' ANDROID_SDK_ROOT='$(ANDROID_SDK_ROOT)' A
 
 # Android app metadata
 ANDROID_APK := $(ANDROID_DIR)/app/build/outputs/apk/debug/app-debug.apk
-ANDROID_PACKAGE := com.cad0p.litter.android
+ANDROID_PACKAGE := it.pcad.litter.android
 ANDROID_ACTIVITY := com.litter.android.MainActivity
 ANDROID_DEVICE_SERIAL ?=
 ANDROID_REINSTALL_ON_SIGNATURE_MISMATCH ?= 1
@@ -739,7 +739,7 @@ watch-sim-run: watch-sim
 		-showBuildSettings 2>/dev/null | awk -F' = ' '/ CODESIGNING_FOLDER_PATH /{print $$2; exit}') ; \
 	echo "==> Installing $$APP_PATH"; \
 	xcrun simctl install $$WATCH_UDID "$$APP_PATH" ; \
-	xcrun simctl launch $$WATCH_UDID com.cad0p.litter.watchkitapp
+	xcrun simctl launch $$WATCH_UDID it.pcad.litter.watchkitapp
 
 android-debug:
 	@echo "==> Building Android debug..."

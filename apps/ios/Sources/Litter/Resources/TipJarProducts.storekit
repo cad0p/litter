@@ -15,7 +15,7 @@
           "locale" : "en_US"
         }
       ],
-      "productID" : "com.cad0p.litter.tip.10",
+      "productID" : "it.pcad.litter.tip.10",
       "referenceName" : "$9.99 Tip",
       "type" : "NonConsumable"
     },
@@ -30,7 +30,7 @@
           "locale" : "en_US"
         }
       ],
-      "productID" : "com.cad0p.litter.tip.25",
+      "productID" : "it.pcad.litter.tip.25",
       "referenceName" : "$24.99 Tip",
       "type" : "NonConsumable"
     },
@@ -45,7 +45,7 @@
           "locale" : "en_US"
         }
       ],
-      "productID" : "com.cad0p.litter.tip.50",
+      "productID" : "it.pcad.litter.tip.50",
       "referenceName" : "$49.99 Tip",
       "type" : "NonConsumable"
     },
@@ -60,7 +60,7 @@
           "locale" : "en_US"
         }
       ],
-      "productID" : "com.cad0p.litter.tip.100",
+      "productID" : "it.pcad.litter.tip.100",
       "referenceName" : "$99.99 Tip",
       "type" : "NonConsumable"
     }

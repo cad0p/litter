@@ -6,7 +6,7 @@
 #define GHOSTTY_STATIC 1
 #import "ghostty.h"
 
-static NSString *const LitterGhosttyErrorDomain = @"com.cad0p.litter.ghostty";
+static NSString *const LitterGhosttyErrorDomain = @"it.pcad.litter.ghostty";
 
 static void LitterGhosttyResizeBackingLayers(UIView *view, CGFloat scale);
 static void LitterGhosttyWakeup(void *userdata);
@@ -493,7 +493,7 @@ static dispatch_queue_t LitterGhosttyDestroyQueue(void) {
             QOS_CLASS_UTILITY,
             0
         );
-        queue = dispatch_queue_create("com.cad0p.litter.ghostty.destroy", attr);
+        queue = dispatch_queue_create("it.pcad.litter.ghostty.destroy", attr);
     });
     return queue;
 }

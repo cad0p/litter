@@ -21,12 +21,12 @@ val uploadKeyPassword = projectPropOrEnv("LITTER_UPLOAD_KEY_PASSWORD")
 val hasUploadSigning = listOf(uploadStoreFile, uploadStorePassword, uploadKeyAlias, uploadKeyPassword).all { !it.isNullOrBlank() }
 
 android {
-    namespace = "com.cad0p.litter.android"
+    namespace = "it.pcad.litter.android"
     compileSdk = 35
     ndkVersion = projectPropOrEnv("ANDROID_NDK_VERSION") ?: "30.0.14904198"
 
     defaultConfig {
-        applicationId = "com.cad0p.litter.android"
+        applicationId = "it.pcad.litter.android"
         minSdk = 26
         targetSdk = 35
         versionCode = 11

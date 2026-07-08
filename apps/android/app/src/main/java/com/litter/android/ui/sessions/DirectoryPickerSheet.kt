@@ -200,7 +200,7 @@ fun DirectoryPickerSheet(
         if (!isLocalServer(selectedServerId)) return raw
         // On local, hide every breadcrumb above `~` and relabel the anchor
         // itself as "~" so the trail reads `~ / projects / foo` rather than
-        // `data / user / 0 / com.cad0p.litter / files / codex-home / workspace / projects / foo`.
+        // `data / user / 0 / it.pcad.litter / files / codex-home / workspace / projects / foo`.
         val home = com.litter.android.state.HomeAnchor.path(context)
         val homeRoot = "~" to home
         val suffix = raw.dropWhile { it.second != home }.drop(1)

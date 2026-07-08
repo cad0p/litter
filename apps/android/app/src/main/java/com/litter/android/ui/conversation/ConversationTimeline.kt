@@ -2,7 +2,7 @@ package com.litter.android.ui.conversation
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import com.cad0p.litter.android.R
+import it.pcad.litter.android.R
 import androidx.compose.foundation.ExperimentalFoundationApi
 import android.graphics.BitmapFactory
 import android.net.Uri

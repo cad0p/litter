@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ANDROID_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-APP_ID="com.cad0p.litter.android"
+APP_ID="it.pcad.litter.android"
 ACTIVITY="com.litter.android.MainActivity"
 PORT="${OPENCODE_PORT:-4096}"
 

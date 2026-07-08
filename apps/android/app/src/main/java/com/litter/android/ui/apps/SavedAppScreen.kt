@@ -552,15 +552,15 @@ private fun AppModeWebView(
                         super.onPageFinished(view, url)
                         if (view == null) return
                         view.setTag(
-                            com.cad0p.litter.android.R.id.widget_webview_shell_ready,
+                            it.pcad.litter.android.R.id.widget_webview_shell_ready,
                             true,
                         )
                         val pending = view.getTag(
-                            com.cad0p.litter.android.R.id.widget_webview_pending_html,
+                            it.pcad.litter.android.R.id.widget_webview_pending_html,
                         ) as? String
                         if (pending != null) {
                             view.setTag(
-                                com.cad0p.litter.android.R.id.widget_webview_pending_html,
+                                it.pcad.litter.android.R.id.widget_webview_pending_html,
                                 null,
                             )
                             pushWidgetContent(view, pending, runScripts = true)
@@ -596,20 +596,20 @@ private fun AppModeWebView(
         update = { webView ->
             val html = payload.widgetHtml
             val lastEscaped = webView.getTag(
-                com.cad0p.litter.android.R.id.widget_webview_last_escaped,
+                it.pcad.litter.android.R.id.widget_webview_last_escaped,
             ) as? String
             val escaped = escapeJsString(html)
             if (escaped == lastEscaped) return@AndroidView
             webView.setTag(
-                com.cad0p.litter.android.R.id.widget_webview_last_escaped,
+                it.pcad.litter.android.R.id.widget_webview_last_escaped,
                 escaped,
             )
             val shellReady = webView.getTag(
-                com.cad0p.litter.android.R.id.widget_webview_shell_ready,
+                it.pcad.litter.android.R.id.widget_webview_shell_ready,
             ) as? Boolean ?: false
             if (!shellReady) {
                 webView.setTag(
-                    com.cad0p.litter.android.R.id.widget_webview_pending_html,
+                    it.pcad.litter.android.R.id.widget_webview_pending_html,
                     html,
                 )
             } else {

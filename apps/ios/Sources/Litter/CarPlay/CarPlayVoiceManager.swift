@@ -5,7 +5,7 @@ import UIKit
 
 @MainActor
 final class CarPlayVoiceManager {
-    private static let log = Logger(subsystem: "com.cad0p.litter", category: "CarPlay")
+    private static let log = Logger(subsystem: "it.pcad.litter", category: "CarPlay")
 
     private let voiceActions: VoiceActions
     private let appModel: AppModel

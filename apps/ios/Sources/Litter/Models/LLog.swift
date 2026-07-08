@@ -2,7 +2,7 @@ import Foundation
 import OSLog
 
 enum LLog {
-    private static let subsystemRoot = Bundle.main.bundleIdentifier ?? "com.cad0p.litter"
+    private static let subsystemRoot = Bundle.main.bundleIdentifier ?? "it.pcad.litter"
     private nonisolated(unsafe) static var bootstrapped = false
 
     static func bootstrap() {

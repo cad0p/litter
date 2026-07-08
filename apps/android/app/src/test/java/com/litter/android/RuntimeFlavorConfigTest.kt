@@ -1,6 +1,6 @@
 package com.litter.android
 
-import com.cad0p.litter.android.BuildConfig
+import it.pcad.litter.android.BuildConfig
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

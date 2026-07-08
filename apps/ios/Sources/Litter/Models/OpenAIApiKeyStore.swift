@@ -4,7 +4,7 @@ import Security
 final class OpenAIApiKeyStore {
     static let shared = OpenAIApiKeyStore()
 
-    private let service = "com.cad0p.litter.openai-api-key"
+    private let service = "it.pcad.litter.openai-api-key"
     private let apiKeyAccount = "default"
     private let baseURLAccount = "openai-base-url"
     private let apiKeyEnvKey = "OPENAI_API_KEY"

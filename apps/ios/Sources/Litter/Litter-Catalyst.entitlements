@@ -8,7 +8,7 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.cad0p.litter</string>
+		<string>group.it.pcad.litter</string>
 	</array>
 	<key>com.apple.security.device.bluetooth</key>
 	<true/>

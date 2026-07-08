@@ -26,7 +26,7 @@
 	<key>WKWatchOnly</key>
 	<false/>
 	<key>WKCompanionAppBundleIdentifier</key>
-	<string>com.cad0p.litter</string>
+	<string>it.pcad.litter</string>
 	<key>NSSiriUsageDescription</key>
 	<string>Dispatch tasks to Codex by voice.</string>
 	<key>NSMicrophoneUsageDescription</key>

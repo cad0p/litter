@@ -27,7 +27,7 @@ SCHEME="${SCHEME:-LitterMac}"
 CONFIGURATION="${CONFIGURATION:-DeveloperID}"
 PROJECT_DIR="${PROJECT_DIR:-$IOS_DIR}"
 PROJECT_PATH="${PROJECT_PATH:-$PROJECT_DIR/Litter.xcodeproj}"
-APP_BUNDLE_ID="${APP_BUNDLE_ID:-com.cad0p.litter}"
+APP_BUNDLE_ID="${APP_BUNDLE_ID:-it.pcad.litter}"
 APP_DISPLAY_NAME="${APP_DISPLAY_NAME:-Litter}"
 TEAM_ID="${TEAM_ID:-}"
 # Developer ID provisioning profile name (NOT the Mac App Store one).

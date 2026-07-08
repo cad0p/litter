@@ -57,7 +57,7 @@ internal fun SelectableMarkdownText(
             runCatching {
                 androidx.core.content.res.ResourcesCompat.getFont(
                     context,
-                    com.cad0p.litter.android.R.font.berkeley_mono_regular,
+                    it.pcad.litter.android.R.font.berkeley_mono_regular,
                 )
             }.getOrNull() ?: android.graphics.Typeface.MONOSPACE
         } else {
