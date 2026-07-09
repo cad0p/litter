@@ -58,7 +58,9 @@ targets:
       path: Sources/Litter/Litter.entitlements
       properties:
         aps-environment: production
-        com.apple.developer.carplay-voice-based-conversation: true
+        # com.apple.developer.carplay-voice-based-conversation removed for fork
+        # — requires special Apple approval not available via the public API.
+        # Re-add when CarPlay support is needed and the entitlement is approved.
         # iCloud KVS sync (Feature C). Re-add when the iCloud container
         # `iCloud.it.pcad.litter` exists in the Apple Developer Portal
         # AND is enabled on the iOS app's provisioning profile. Without
