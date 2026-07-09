@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
           fetch-depth: 0
@@ -54,8 +54,14 @@ jobs:
         with:
           targets: aarch64-apple-ios,aarch64-apple-ios-sim,x86_64-apple-ios,i686-unknown-linux-musl
 
+      - name: Rust dependency cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "shared/rust-bridge -> target"
+          save-if: ${{ github.ref == 'main' }}
+
       - name: Setup sccache
-        uses: mozilla-actions/sccache-action@v0.0.9
+        uses: mozilla-actions/sccache-action@v0.0.10
 
       - name: Prime sccache
         env:
@@ -127,7 +133,7 @@ jobs:
             apps/ios/Sources/Litter/Bridge/UniFFICodexClient.generated.swift
 
       - name: Upload iOS release prep artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ios-release-prep
           path: .ci-prep/ios
@@ -144,7 +150,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
           fetch-depth: 0
@@ -198,7 +204,7 @@ jobs:
           asc --version
 
       - name: Download iOS release prep artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ios-release-prep
           path: .ci-prep/ios
