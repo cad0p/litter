@@ -104,11 +104,12 @@ jobs:
             export AWS_SECRET_ACCESS_KEY="$SCCACHE_R2_SECRET_ACCESS_KEY"
             export RUSTC_WRAPPER=sccache
           else
-            # No R2: use local disk sccache, and crucially DO NOT set
-            # AWS_* env vars (they make aws-sdk try EC2 metadata at
-            # 169.254.169.254, which fails on macOS runners).
-            export SCCACHE_DIR="$RUNNER_TEMP/sccache"
-            export RUSTC_WRAPPER=sccache
+            # No R2: skip sccache entirely. Local disk sccache only helps
+            # within a single job run (reruns), not across runs — and keeping
+            # RUSTC_WRAPPER=sccache without R2 causes the aws-sdk crate
+            # (transitive dep) to attempt EC2 instance metadata credential
+            # fallback at 169.254.169.254, which fails on macOS runners.
+            echo "No R2 sccache; compiling without sccache wrapper"
           fi
           trap 'status=$?; echo "==> sccache stats"; sccache --show-stats || true; if [ -f "$SCCACHE_ERROR_LOG" ]; then echo "==> sccache error log"; tail -200 "$SCCACHE_ERROR_LOG" || true; fi; exit $status' EXIT
           sccache --zero-stats || true
