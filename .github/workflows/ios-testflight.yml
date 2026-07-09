@@ -110,12 +110,16 @@ jobs:
             export AWS_SECRET_ACCESS_KEY="$SCCACHE_R2_SECRET_ACCESS_KEY"
             export RUSTC_WRAPPER=sccache
           else
-            # No R2: skip sccache entirely. Local disk sccache only helps
-            # within a single job run (reruns), not across runs — and keeping
-            # RUSTC_WRAPPER=sccache without R2 causes the aws-sdk crate
-            # (transitive dep) to attempt EC2 instance metadata credential
-            # fallback at 169.254.169.254, which fails on macOS runners.
+            # No R2: skip sccache entirely. build-rust.sh sources
+            # load-sccache-aws-creds.sh which sets AWS_PROFILE + a hardcoded
+            # R2 SCCACHE_ENDPOINT; on forks without R2 creds the aws-sdk
+            # crate (transitive dep) falls back to EC2 instance metadata at
+            # 169.254.169.254 and fails on macOS runners. SKIP_SCCACHE_AWS_CREDS
+            # makes build-rust.sh skip the sourcing, and CARGO_INCREMENTAL=1
+            # disables its RUSTC_WRAPPER=sccache auto-enable guard.
             echo "No R2 sccache; compiling without sccache wrapper"
+            export SKIP_SCCACHE_AWS_CREDS=1
+            export CARGO_INCREMENTAL=1
           fi
           trap 'status=$?; echo "==> sccache stats"; sccache --show-stats || true; if [ -f "$SCCACHE_ERROR_LOG" ]; then echo "==> sccache error log"; tail -200 "$SCCACHE_ERROR_LOG" || true; fi; exit $status' EXIT
           sccache --zero-stats || true

@@ -4,7 +4,14 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 IOS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 REPO_DIR="$(cd "$IOS_DIR/../.." && pwd)"
-source "$REPO_DIR/tools/scripts/load-sccache-aws-creds.sh"
+# A caller can opt out of R2 sccache (e.g. forks without Cloudflare creds) by
+# exporting SKIP_SCCACHE_AWS_CREDS=1. This prevents the sourced script's
+# AWS_PROFILE/SCCACHE_ENDPOINT from leaking into the aws-sdk crate's
+# credential provider chain (which falls back to EC2 metadata at
+# 169.254.169.254 and fails on non-EC2 CI runners).
+if [ "${SKIP_SCCACHE_AWS_CREDS:-0}" != "1" ]; then
+  source "$REPO_DIR/tools/scripts/load-sccache-aws-creds.sh"
+fi
 RUST_BRIDGE_DIR="$REPO_DIR/shared/rust-bridge"
 CARGO_TARGET_DIR_EFFECTIVE="${CARGO_TARGET_DIR:-$RUST_BRIDGE_DIR/target}"
 FRAMEWORKS_DIR="$IOS_DIR/Frameworks"
