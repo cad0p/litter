@@ -89,9 +89,18 @@ jobs:
           CARGO_BUILD_JOBS: "3"
           IOS_RUST_PROFILE: mobile-release
           RUSTC_WRAPPER: sccache
+          SCCACHE_R2_ENDPOINT: ${{ secrets.SCCACHE_R2_ENDPOINT }}
         run: |
           set -euo pipefail
           export SCCACHE_ERROR_LOG="$RUNNER_TEMP/sccache-ios.log"
+          # When R2 secrets are absent, drop all S3 env vars so sccache uses
+          # the local disk cache we primed (otherwise it tries S3 with empty
+          # credentials and fails every rustc invocation).
+          if [ -z "$SCCACHE_R2_ENDPOINT" ]; then
+            unset SCCACHE_BUCKET SCCACHE_ENDPOINT SCCACHE_REGION SCCACHE_S3_USE_SSL SCCACHE_S3_KEY_PREFIX
+            unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+            export SCCACHE_DIR="$RUNNER_TEMP/sccache"
+          fi
           trap 'status=$?; echo "==> sccache stats"; sccache --show-stats || true; if [ -f "$SCCACHE_ERROR_LOG" ]; then echo "==> sccache error log"; tail -200 "$SCCACHE_ERROR_LOG" || true; fi; exit $status' EXIT
           sccache --zero-stats || true
           ./apps/ios/scripts/build-rust.sh --preserve-current --device-only
