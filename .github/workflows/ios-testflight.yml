@@ -68,13 +68,18 @@ jobs:
           rm -f "$SCCACHE_ERROR_LOG"
           sccache --stop-server || true
           # Only use remote (R2) sccache when the endpoint secret is set;
-          # otherwise fall back to local-only sccache so forks without R2
-          # still build (just without cross-run caching).
+          # otherwise use local disk storage so forks without R2 still build.
+          # We must unset the S3 env vars because sccache picks them up even
+          # when SCCACHE_DIR is set, causing it to try the R2 endpoint.
           if [ -n "$SCCACHE_R2_ENDPOINT" ]; then
             sccache --start-server
           else
-            echo "SCCACHE_R2_ENDPOINT not set; using local-only sccache"
-            SCCACHE_DIR="$RUNNER_TEMP/sccache" sccache --start-server
+            echo "SCCACHE_R2_ENDPOINT not set; using local disk sccache"
+            unset SCCACHE_BUCKET SCCACHE_ENDPOINT SCCACHE_REGION SCCACHE_S3_USE_SSL SCCACHE_S3_KEY_PREFIX
+            unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+            export SCCACHE_DIR="$RUNNER_TEMP/sccache"
+            mkdir -p "$SCCACHE_DIR"
+            sccache --start-server
           fi
           sccache --show-stats || true
 
