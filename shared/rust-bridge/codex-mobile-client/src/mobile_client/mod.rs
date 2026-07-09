@@ -1738,6 +1738,12 @@ impl MobileClient {
                 if !selected_agent_names.is_empty() && !selected_agent_names.contains(&agent.name) {
                     return None;
                 }
+                // Exclude terminal-only agents (shell) from app-server connections.
+                // The terminal has its own dedicated connection path via
+                // TerminalSession::open() -> connect_jsonl_agent_stream().
+                if agent.name == "shell" {
+                    return None;
+                }
                 let runtime_kind =
                     crate::alleycat::agent_runtime_kind(&agent.name, &agent.display_name)?;
                 if !seen_runtime_kinds.insert(runtime_kind.clone()) {
@@ -1752,6 +1758,14 @@ impl MobileClient {
                     .update_server_health(server_id.as_str(), ServerHealthSnapshot::Disconnected);
                 return Err(TransportError::ConnectionFailed(
                     "no selected Alleycat runtime streams are available".to_string(),
+                ));
+            }
+            // Exclude terminal-only agents (shell) from app-server fallback.
+            if agent_name == "shell" {
+                self.app_store
+                    .update_server_health(server_id.as_str(), ServerHealthSnapshot::Disconnected);
+                return Err(TransportError::ConnectionFailed(
+                    "shell is a terminal-only agent; select a thread agent for app-server connection".to_string(),
                 ));
             }
             vec![(
